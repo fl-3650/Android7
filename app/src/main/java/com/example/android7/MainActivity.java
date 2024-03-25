@@ -1,5 +1,6 @@
 package com.example.android7;
 
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,29 +13,23 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+    private int minute;
+    private int hour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Intent startIntent = new Intent(this, MusicService.class);
         startService(startIntent);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Confirmation");
-        builder.setMessage("Sure?");
-        builder.setIcon(R.drawable.ic_dialog_alert);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                (view, hourOfDay, minute) -> {
 
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+                }, hour, minute, true);
 
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> {
-            dialog.dismiss();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        timePickerDialog.show();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.android7;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -14,5 +15,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent startIntent = new Intent(this, MusicService.class);
+        startService(startIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent stopIntent = new Intent(this, MusicService.class);
+        stopService(stopIntent);
     }
 }

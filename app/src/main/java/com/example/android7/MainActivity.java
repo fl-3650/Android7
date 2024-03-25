@@ -1,9 +1,11 @@
 package com.example.android7;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.DatePicker;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -13,8 +15,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private int minute;
-    private int hour;
+    private int year;
+    private int month;
+    private int day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
         Intent startIntent = new Intent(this, MusicService.class);
         startService(startIntent);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
+        DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
 
-                }, hour, minute, true);
+        };
 
-        timePickerDialog.show();
+        DatePickerDialog datePickerDialog = new DatePickerDialog
+                (MainActivity.this, dateSetListener, year, month, day);
+
+        datePickerDialog.show();
     }
 
     @Override

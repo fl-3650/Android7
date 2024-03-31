@@ -18,29 +18,41 @@ public class MainActivity extends AppCompatActivity {
     private int year;
     private int month;
     private int day;
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent startIntent = new Intent(this, MusicService.class);
-        startService(startIntent);
+        // ...
 
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
+            this.year = year;
+            this.month = month;
+            this.day = dayOfMonth;
 
+            TimePickerDialog.OnTimeSetListener timeSetListener = (view1, hourOfDay, minute1) -> {
+                this.hour = hourOfDay;
+                this.minute = minute1;
+
+                String date = String.format("%02d-%02d-%04d", day, month + 1, year);
+                String time = String.format("%02d:%02d", hour, minute);
+
+                Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                intent.putExtra("date", date);
+                intent.putExtra("time", time);
+                startActivity(intent);
+            };
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this, timeSetListener, 0, 0, false);
+            timePickerDialog.show();
         };
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog
-                (MainActivity.this, dateSetListener, year, month, day);
-
+        DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this, dateSetListener, year, month, day);
         datePickerDialog.show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent stopIntent = new Intent(this, MusicService.class);
-        stopService(stopIntent);
-    }
+    // ...
 }
